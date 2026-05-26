@@ -1,0 +1,3 @@
+# XmlReportGenerator
+
+Initializing repository...
