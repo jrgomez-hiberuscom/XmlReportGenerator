@@ -1,0 +1,32 @@
+name: GenerateBlazorComponent
+description: Generates a Blazor component that reproduces a Crystal Reports HTML output from XML data.
+template_format: semantic-kernel
+template: |
+  You are a senior Blazor developer.
+
+  You are given:
+  1. XML data that drives the report:
+  {{$xmlContent}}
+
+  2. Reference HTML produced by Crystal Reports that you must reproduce:
+  {{$referenceHtml}}
+
+  Generate a single, complete Blazor component (.razor file) that:
+  - Reproduces the same visual structure and layout as the reference HTML
+  - Uses an @code block with C# to parse the XML data using System.Xml.Linq (XDocument/XElement)
+  - Binds the parsed data to the HTML markup using Blazor data binding
+  - Is self-contained (no external dependencies beyond standard .NET and Blazor)
+  - Uses only standard HTML and inline styles — no external CSS frameworks
+  - Compiles without errors in a standard Blazor project
+  - Returns ONLY the .razor file content — no explanations, no markdown code blocks
+
+input_variables:
+  - name: xmlContent
+    description: The XML data to be displayed in the component.
+  - name: referenceHtml
+    description: The reference HTML output from Crystal Reports to reproduce.
+
+execution_settings:
+  default:
+    temperature: 0.3
+    max_tokens: 8192
