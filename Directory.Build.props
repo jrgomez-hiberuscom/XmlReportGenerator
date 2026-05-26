@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>net9.0</TargetFramework>
+    <Authors>XmlReportGenerator Contributors</Authors>
+    <Company>XmlReportGenerator</Company>
+    <Copyright>Copyright © 2025</Copyright>
+  </PropertyGroup>
+</Project>

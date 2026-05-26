@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>XmlReportGenerator.AI</RootNamespace>
+    <AssemblyName>XmlReportGenerator.AI</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SemanticKernel" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" />
+    <PackageReference Include="Microsoft.SemanticKernel.Yaml" />
+    <!--
+      Uncomment when Microsoft.SemanticKernel.Connectors.Google is publicly available:
+      <PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" />
+    -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XmlReportGenerator.Core\XmlReportGenerator.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Prompts\*.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
