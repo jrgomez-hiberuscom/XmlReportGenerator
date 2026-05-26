@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>XmlReportGenerator.Reports</AssemblyName>
+    <RootNamespace>XmlReportGenerator.Reports</RootNamespace>
+    <!--
+      Crystal Reports requires x86 platform target.
+      Ensure the consuming application is also built for x86 or AnyCPU with 32-bit preferred.
+    -->
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XmlReportGenerator.Core\XmlReportGenerator.Core.csproj" />
+  </ItemGroup>
+
+  <!--
+    ╔══════════════════════════════════════════════════════════════════╗
+    ║  SAP Crystal Reports Runtime — NOT available on NuGet.org       ║
+    ║                                                                  ║
+    ║  To enable Crystal Reports support:                              ║
+    ║  1. Download and install the SAP Crystal Reports Runtime SP     ║
+    ║     for Visual Studio from:                                      ║
+    ║     https://www.sap.com/products/technology-platform/           ║
+    ║                         crystal-reports.html                    ║
+    ║  2. Uncomment the <Reference> entries below and adjust the      ║
+    ║     HintPath to match your installation directory.              ║
+    ║  3. Add CRYSTAL_REPORTS to the project's DefineConstants or     ║
+    ║     pass it via the command line:                               ║
+    ║       dotnet build -p:DefineConstants=CRYSTAL_REPORTS           ║
+    ╚══════════════════════════════════════════════════════════════════╝
+
+  <ItemGroup Condition="$(DefineConstants.Contains('CRYSTAL_REPORTS'))">
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet4\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet4\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web">
+      <HintPath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet4\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  -->
+
+</Project>
