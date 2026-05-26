@@ -1,0 +1,34 @@
+name: GenerateXml
+description: Generates a fictitious but schema-valid XML document from an XSD schema and natural-language instructions.
+template_format: semantic-kernel
+input_variables:
+  - name: xsd_content
+    description: The full text of the XSD schema.
+    is_required: true
+  - name: markdown_instructions
+    description: Natural-language instructions describing the desired data and context.
+    is_required: true
+execution_settings:
+  default:
+    temperature: 0.3
+    max_tokens: 4096
+---
+You are an expert XML generator. Your task is to produce a realistic but entirely fictitious XML document that is **strictly valid** against the XSD schema provided below.
+
+## Rules
+1. The generated XML must validate against the XSD without any errors.
+2. All required elements and attributes must be present.
+3. Use plausible-looking fictitious data (fake names, dates, amounts, etc.). **Do not use real personal data.**
+4. Return **only** the raw XML document — no markdown fences, no explanations, no extra text.
+5. The XML declaration (`<?xml version="1.0" encoding="UTF-8"?>`) must be the first line.
+
+## XSD Schema
+```xml
+{{$xsd_content}}
+```
+
+## Instructions
+{{$markdown_instructions}}
+
+## Output
+Return the XML document now:

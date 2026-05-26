@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>XmlReportGenerator.Blazor</AssemblyName>
+    <RootNamespace>XmlReportGenerator.Blazor</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\XmlReportGenerator.Core\XmlReportGenerator.Core.csproj" />
+  </ItemGroup>
+
+</Project>
