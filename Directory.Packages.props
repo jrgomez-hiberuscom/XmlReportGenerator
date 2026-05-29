@@ -13,17 +13,8 @@
     <!-- JSON / XML -->
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Newtonsoft.Json.Schema" Version="4.0.1" />
-    <!-- Semantic Kernel -->
-    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.76.0" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.76.0" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.76.0" />
-    <!--
-      Note: Microsoft.SemanticKernel.Connectors.Google (Gemini) is currently an experimental
-      package. To use Google Gemini, install it from NuGet when available:
-      <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.76.0-preview" />
-    -->
-    <!-- Semantic Kernel YAML prompt templates -->
-    <PackageVersion Include="Microsoft.SemanticKernel.Yaml" Version="1.76.0" />
+    <!-- HTTP client -->
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.0" />
     <!-- Blazor / Roslyn -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />

@@ -77,7 +77,7 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IJsonEncoderService, JsonEncoderService>();
 
         // AI services
-        services.AddSemanticKernel(context.Configuration);
+        services.AddAiServices(context.Configuration);
         services.AddSingleton<IXmlGeneratorService, XmlGeneratorService>();
         services.AddSingleton<IBlazorComponentGenerator, BlazorComponentGenerator>();
 

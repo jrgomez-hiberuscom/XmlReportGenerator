@@ -6,14 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SemanticKernel" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
-    <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" />
-    <PackageReference Include="Microsoft.SemanticKernel.Yaml" />
-    <!--
-      Uncomment when Microsoft.SemanticKernel.Connectors.Google is publicly available:
-      <PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" />
-    -->
+    <PackageReference Include="Microsoft.Extensions.Http" />
   </ItemGroup>
 
   <ItemGroup>
