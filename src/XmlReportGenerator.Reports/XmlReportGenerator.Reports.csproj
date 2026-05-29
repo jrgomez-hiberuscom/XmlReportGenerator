@@ -3,34 +3,7 @@
   <PropertyGroup>
     <RootNamespace>XmlReportGenerator.Reports</RootNamespace>
     <AssemblyName>XmlReportGenerator.Reports</AssemblyName>
-    <!-- Crystal Reports runtime requires x86 platform -->
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-
-  <!--
-    IMPORTANT: SAP Crystal Reports Runtime DLLs are NOT available on NuGet.
-    To enable Crystal Reports support:
-    1. Install the SAP Crystal Reports Runtime for Visual Studio from:
-       https://www.sap.com/products/technology-platform/crystal-reports.html
-    2. After installation, add local references to the DLLs typically found at:
-       C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\
-       - CrystalDecisions.CrystalReports.Engine.dll
-       - CrystalDecisions.Shared.dll
-       - CrystalDecisions.ReportSource.dll
-       - CrystalDecisions.Web.dll
-    3. Define the CRYSTAL_REPORTS constant in your build configuration:
-       <DefineConstants>CRYSTAL_REPORTS</DefineConstants>
-
-    Example local reference (uncomment and adjust path when runtime is installed):
-    <ItemGroup>
-      <Reference Include="CrystalDecisions.CrystalReports.Engine">
-        <HintPath>C:\Program Files (x86)\SAP BusinessObjects\...\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
-      </Reference>
-      <Reference Include="CrystalDecisions.Shared">
-        <HintPath>C:\Program Files (x86)\SAP BusinessObjects\...\CrystalDecisions.Shared.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-  -->
 
   <ItemGroup>
     <ProjectReference Include="..\XmlReportGenerator.Core\XmlReportGenerator.Core.csproj" />

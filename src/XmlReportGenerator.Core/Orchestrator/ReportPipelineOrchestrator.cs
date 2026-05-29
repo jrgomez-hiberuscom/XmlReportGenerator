@@ -88,7 +88,7 @@ public class ReportPipelineOrchestrator
             // ── Step 3: Crystal Reports Export ────────────────────────────────────────
             _logger.LogInformation("Step 3: Exporting Crystal Report to HTML...");
             var htmlOutputPath = Path.Combine(input.OutputDirectory, "report.html");
-            await _crystalReportExporter.ExportToHtmlAsync(input.RptFilePath, result.GeneratedXml, htmlOutputPath, cancellationToken);
+            await _crystalReportExporter.ExportToHtmlAsync(input.RptFilePath, result.GeneratedXml, input.XsdFilePath, htmlOutputPath, cancellationToken);
             result.HtmlReportPath = htmlOutputPath;
             _logger.LogInformation("Step 3 complete. HTML report written to {Path}", htmlOutputPath);
 

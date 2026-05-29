@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using XmlReportGenerator.Core.Interfaces;
 
@@ -5,25 +7,69 @@ namespace XmlReportGenerator.AI.Services;
 
 /// <summary>
 /// Generates fictitious but schema-valid XML documents using Semantic Kernel and an LLM.
+/// When a <see cref="LiteLlmClient"/> is provided it is used directly (bypassing SK) to avoid
+/// issues with models that return extra fields such as <c>reasoning_content</c>.
 /// </summary>
 public class XmlGeneratorService : IXmlGeneratorService
 {
     private readonly Kernel _kernel;
+    private readonly LiteLlmClient? _liteLlm;
+    private readonly ILogger<XmlGeneratorService> _logger;
 
-    /// <summary>
-    /// Initializes a new instance of <see cref="XmlGeneratorService"/>.
-    /// </summary>
-    /// <param name="kernel">The configured Semantic Kernel instance.</param>
-    public XmlGeneratorService(Kernel kernel)
+    private const int MaxXsdLength = 3300;
+    private const int MaxInstructionsLength = 1500;
+
+    public XmlGeneratorService(Kernel kernel, ILogger<XmlGeneratorService> logger, LiteLlmClient? liteLlm = null)
     {
         _kernel = kernel;
+        _logger = logger;
+        _liteLlm = liteLlm;
     }
 
     /// <inheritdoc />
     public async Task<string> GenerateXmlAsync(string xsdContent, string markdownInstructions, CancellationToken cancellationToken = default)
     {
-        var promptPath = Path.Combine(
-            AppContext.BaseDirectory, "Prompts", "GenerateXml.yaml");
+        // Compact inputs to stay within token limits
+        xsdContent = CompactXsd(xsdContent);
+
+        if (markdownInstructions.Length > MaxInstructionsLength)
+            markdownInstructions = markdownInstructions[..MaxInstructionsLength] + "\n[...truncated]";
+
+        _logger.LogDebug("XSD input ({Length} chars): {Xsd}", xsdContent.Length, xsdContent[..Math.Min(200, xsdContent.Length)]);
+
+        string rawContent;
+
+        if (_liteLlm is not null)
+        {
+            // Direct HTTP call — avoids SK parsing issues with reasoning models
+            const string system = "You are an XML data generator. Generate a valid XML for the given schema. Return ONLY the XML document, no explanations, no markdown code blocks.";
+            var user = $"XSD:\n{xsdContent}\n\nInstructions:\n{markdownInstructions}";
+            rawContent = await _liteLlm.ChatAsync(system, user, cancellationToken);
+        }
+        else
+        {
+            rawContent = await InvokeViaSKAsync(xsdContent, markdownInstructions, cancellationToken);
+        }
+
+        _logger.LogDebug("LLM raw response ({Length} chars): {Raw}",
+            rawContent.Length,
+            rawContent.Length > 0 ? rawContent[..Math.Min(500, rawContent.Length)] : "(empty)");
+
+        if (string.IsNullOrWhiteSpace(rawContent))
+        {
+            _logger.LogWarning("LLM returned an empty response for XML generation.");
+            return string.Empty;
+        }
+
+        var xmlContent = StripMarkdownCodeFences(rawContent);
+        _logger.LogDebug("XML after stripping fences ({Length} chars)", xmlContent.Length);
+
+        return xmlContent.Trim();
+    }
+
+    private async Task<string> InvokeViaSKAsync(string xsdContent, string markdownInstructions, CancellationToken cancellationToken)
+    {
+        var promptPath = Path.Combine(AppContext.BaseDirectory, "Prompts", "GenerateXml.yaml");
 
         KernelFunction function;
 
@@ -34,23 +80,15 @@ public class XmlGeneratorService : IXmlGeneratorService
         }
         else
         {
-            // Fallback inline prompt when YAML file is not available
             const string inlinePrompt = """
-                You are an XML data generator.
+                You are an XML data generator. Generate a valid XML for this schema. Return ONLY XML.
 
-                Given the following XSD schema:
+                XSD:
                 {{$xsdContent}}
 
-                And the following instructions:
+                Instructions:
                 {{$markdownInstructions}}
-
-                Generate a single valid XML document that:
-                - Conforms strictly to the XSD schema
-                - Contains realistic-looking but entirely fictitious data
-                - Includes all required elements and attributes
-                - Returns ONLY the XML document, no explanations or markdown code blocks
                 """;
-
             function = _kernel.CreateFunctionFromPrompt(inlinePrompt);
         }
 
@@ -61,24 +99,31 @@ public class XmlGeneratorService : IXmlGeneratorService
         };
 
         var response = await _kernel.InvokeAsync(function, arguments, cancellationToken);
-        var xmlContent = response.GetValue<string>() ?? string.Empty;
-
-        // Strip markdown code fences if the LLM wrapped the response
-        xmlContent = StripMarkdownCodeFences(xmlContent);
-
-        return xmlContent.Trim();
+        return response.GetValue<string>() ?? string.Empty;
     }
 
+    /// <summary>
+    /// Removes XML comments and collapses whitespace to reduce token usage.
+    /// </summary>
+    private static string CompactXsd(string xsd)
+    {
+        // Remove XML comments
+        xsd = Regex.Replace(xsd, @"<!--.*?-->", "", RegexOptions.Singleline);
+        // Remove msprop:* attributes (e.g. msprop:SomeProp="value")
+        xsd = Regex.Replace(xsd, @"\s+msprop:\w+=""[^""]*""", "");
+        var lines = xsd.Split('\n')
+            .Select(l => l.Trim())
+            .Where(l => !string.IsNullOrEmpty(l));
+        return string.Join('\n', lines);
+    }
+
+    /// <summary>
+    /// Strips markdown code fences (```xml ... ```) from LLM responses.
+    /// </summary>
     private static string StripMarkdownCodeFences(string content)
     {
-        if (content.StartsWith("```xml", StringComparison.OrdinalIgnoreCase))
-            content = content[6..];
-        else if (content.StartsWith("```", StringComparison.Ordinal))
-            content = content[3..];
-
-        if (content.EndsWith("```", StringComparison.Ordinal))
-            content = content[..^3];
-
+        content = Regex.Replace(content, @"^```[a-zA-Z]*\r?\n?", "", RegexOptions.Multiline);
+        content = Regex.Replace(content, @"```\s*$", "", RegexOptions.Multiline);
         return content.Trim();
     }
 }

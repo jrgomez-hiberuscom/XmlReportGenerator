@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InformeSolicitudIOEDLPDS xmlns="http://tempuri.org/InformeSolicitudIOEDLPDS.xsd">
+
+  <!-- ═══════════════════════════════════════════════════
+       DATOS PRINCIPALES (solicitante + representante)
+  ════════════════════════════════════════════════════ -->
+  <Datos>
+    <CAMPANIA>2024</CAMPANIA>
+    <AYUDA>Programa de Desarrollo Local Participativo EDLP-2024</AYUDA>
+    <IDEXPTE>EXP-2024-00347</IDEXPTE>
+    <EXPTE>2024/EDLP/0347</EXPTE>
+
+    <!-- Solicitante -->
+    <SOLICITANTE>Cooperativa Agrícola Valle del Ebro, S.Coop.</SOLICITANTE>
+    <DNISOLICITANTE>12345678Z</DNISOLICITANTE>
+    <TFNOF1SOLICITANTE>976123456</TFNOF1SOLICITANTE>
+    <TFNOF2SOLICITANTE>976654321</TFNOF2SOLICITANTE>
+    <TFNOMOV1SOLICITANTE>620111222</TFNOMOV1SOLICITANTE>
+    <TFNOMOV2SOLICITANTE>630333444</TFNOMOV2SOLICITANTE>
+    <DOMICILIOSOLICITANTE>Calle Mayor, 14, 2.º Izda.</DOMICILIOSOLICITANTE>
+    <CPSOLICITANTE>50003</CPSOLICITANTE>
+    <LOCALIDADSOLICITANTE>Zaragoza</LOCALIDADSOLICITANTE>
+    <MUNICIPIOSOLICITANTE>Zaragoza</MUNICIPIOSOLICITANTE>
+    <PROVINCIASOLICITANTE>Zaragoza</PROVINCIASOLICITANTE>
+    <CUENTASOLICITANTE>ES91 2100 0418 4502 0005 1332</CUENTASOLICITANTE>
+    <FECNACSOLICITANTE>15/03/1978</FECNACSOLICITANTE>
+    <TIPOSOLICITANTE>Persona Jurídica</TIPOSOLICITANTE>
+    <IdTipoSolicitante>2</IdTipoSolicitante>
+    <SEXOSOLICITANTE>N/A</SEXOSOLICITANTE>
+    <FAXSOLICITANTE>976123499</FAXSOLICITANTE>
+    <EMAILSOLICITANTE>contacto@cooperativavalle.es</EMAILSOLICITANTE>
+
+    <!-- Representante -->
+    <REPRESENTANTE>Martínez López, José Antonio</REPRESENTANTE>
+    <DNIREPRESENTANTE>23456789D</DNIREPRESENTANTE>
+    <TFNOF1REPRESENTANTE>976987654</TFNOF1REPRESENTANTE>
+    <TFNOF2REPRESENTANTE>976112233</TFNOF2REPRESENTANTE>
+    <TFNOMOV1REPRESENTANTE>655444333</TFNOMOV1REPRESENTANTE>
+    <TFNOMOV2REPRESENTANTE>666777888</TFNOMOV2REPRESENTANTE>
+    <DOMICILIOREPRESENTANTE>Avenida de la Constitución, 8, 1.º B</DOMICILIOREPRESENTANTE>
+    <CPREPRESENTANTE>50001</CPREPRESENTANTE>
+    <LOCALIDADREPRESENTANTE>Zaragoza</LOCALIDADREPRESENTANTE>
+    <PROVINCIAREPRESENTANTE>Zaragoza</PROVINCIAREPRESENTANTE>
+    <FAXREPRESENTANTE>976987699</FAXREPRESENTANTE>
+    <EMAILREPRESENTANTE>jmartinez@cooperativavalle.es</EMAILREPRESENTANTE>
+    <RepresentanteEnCalidadDe>Presidente del Consejo Rector</RepresentanteEnCalidadDe>
+
+    <!-- Metadatos adicionales -->
+    <CodigoDocumento>DOC-2024-EDLP-0347</CodigoDocumento>
+    <FIRMA>FIRMA_BASE64_PLACEHOLDER==</FIRMA>
+    <TituloInformeAyuda>Informe de Solicitud IOEDLPDS – Desarrollo Rural Sostenible</TituloInformeAyuda>
+    <GrupoAyuda>2</GrupoAyuda>
+
+    <!-- Grupo empresarial -->
+    <PgePerteneceGrupoEmpresarial>No</PgePerteneceGrupoEmpresarial>
+    <PgeEmpresaMatrizNifEstadoES></PgeEmpresaMatrizNifEstadoES>
+    <PgeNifEmpresaMatriz></PgeNifEmpresaMatriz>
+    <PgeRazonSocialEmpresaMatriz></PgeRazonSocialEmpresaMatriz>
+  </Datos>
+
+  <!-- ═══════════════════════════
+       PARÁMETROS
+  ══════════════════════════════ -->
+  <Param>
+    <Codigo_Documento>DOC-2024-EDLP-0347</Codigo_Documento>
+  </Param>
+
+  <!-- ═══════════════════════════
+       COSTES (3 líneas de coste)
+  ══════════════════════════════ -->
+  <DatosCostes>
+    <TIPOCOSTE>1</TIPOCOSTE>
+    <IDEXPTE>347</IDEXPTE>
+    <IdRegistroAccion>1001</IdRegistroAccion>
+    <IdEstadoAccion>2</IdEstadoAccion>
+    <IdAcuerdoDe_x0020_>1</IdAcuerdoDe_x0020_>
+    <IdContratosPublicos_x0020_>0</IdContratosPublicos_x0020_>
+    <CONCEPTOCOSTE>Adquisición de maquinaria agrícola de precisión</CONCEPTOCOSTE>
+    <IMPORTECOSTE>45000.00</IMPORTECOSTE>
+    <UNIDADESCOSTE>1</UNIDADESCOSTE>
+    <IMPORTECOSTEIVA>54450.00</IMPORTECOSTEIVA>
+    <NIFPROVEEDOR_SELECCIONADO>99999999R</NIFPROVEEDOR_SELECCIONADO>
+    <OFERTASELECCIONADA_x0020_>Oferta_001_AgroMaq</OFERTASELECCIONADA_x0020_>
+    <NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>AgroMaquinaria Ibérica, S.L.</NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>
+    <IDMOTIVOSELECCIONADO>3</IDMOTIVOSELECCIONADO>
+    <IDACCION>501</IDACCION>
+    <FECHACOSTE>10/01/2024</FECHACOSTE>
+    <OBSERVACIONESECRETARIO>Oferta con mejor relación calidad-precio según informe técnico.</OBSERVACIONESECRETARIO>
+    <DESCRIPCIONCOSTE>Cosechadora de alta eficiencia modelo AgroX-3000</DESCRIPCIONCOSTE>
+    <tipologiaCoste>Inversión material</tipologiaCoste>
+    <IvaAuxiliable>No</IvaAuxiliable>
+    <IVA_Aplicado>21.00</IVA_Aplicado>
+    <DataColumn1></DataColumn1>
+    <INVERSIONAUXILIABLECOSTE>45000.00</INVERSIONAUXILIABLECOSTE>
+  </DatosCostes>
+
+  <DatosCostes>
+    <TIPOCOSTE>2</TIPOCOSTE>
+    <IDEXPTE>347</IDEXPTE>
+    <IdRegistroAccion>1002</IdRegistroAccion>
+    <IdEstadoAccion>2</IdEstadoAccion>
+    <IdAcuerdoDe_x0020_>1</IdAcuerdoDe_x0020_>
+    <IdContratosPublicos_x0020_>0</IdContratosPublicos_x0020_>
+    <CONCEPTOCOSTE>Sistema de riego por goteo automatizado</CONCEPTOCOSTE>
+    <IMPORTECOSTE>18500.00</IMPORTECOSTE>
+    <UNIDADESCOSTE>1</UNIDADESCOSTE>
+    <IMPORTECOSTEIVA>22385.00</IMPORTECOSTEIVA>
+    <NIFPROVEEDOR_SELECCIONADO>11111111H</NIFPROVEEDOR_SELECCIONADO>
+    <OFERTASELECCIONADA_x0020_>Oferta_002_RiegoTech</OFERTASELECCIONADA_x0020_>
+    <NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>RiegoTech Soluciones, S.A.</NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>
+    <IDMOTIVOSELECCIONADO>1</IDMOTIVOSELECCIONADO>
+    <IDACCION>502</IDACCION>
+    <FECHACOSTE>15/02/2024</FECHACOSTE>
+    <OBSERVACIONESECRETARIO>Proveedor con mayor experiencia acreditada en el sector.</OBSERVACIONESECRETARIO>
+    <DESCRIPCIONCOSTE>Instalación completa de riego por goteo en 12 ha</DESCRIPCIONCOSTE>
+    <tipologiaCoste>Inversión material</tipologiaCoste>
+    <IvaAuxiliable>No</IvaAuxiliable>
+    <IVA_Aplicado>21.00</IVA_Aplicado>
+    <DataColumn1></DataColumn1>
+    <INVERSIONAUXILIABLECOSTE>18500.00</INVERSIONAUXILIABLECOSTE>
+  </DatosCostes>
+
+  <DatosCostes>
+    <TIPOCOSTE>3</TIPOCOSTE>
+    <IDEXPTE>347</IDEXPTE>
+    <IdRegistroAccion>1003</IdRegistroAccion>
+    <IdEstadoAccion>2</IdEstadoAccion>
+    <IdAcuerdoDe_x0020_>2</IdAcuerdoDe_x0020_>
+    <IdContratosPublicos_x0020_>0</IdContratosPublicos_x0020_>
+    <CONCEPTOCOSTE>Consultoría y redacción del proyecto técnico</CONCEPTOCOSTE>
+    <IMPORTECOSTE>4200.00</IMPORTECOSTE>
+    <UNIDADESCOSTE>1</UNIDADESCOSTE>
+    <IMPORTECOSTEIVA>5082.00</IMPORTECOSTEIVA>
+    <NIFPROVEEDOR_SELECCIONADO>22222222J</NIFPROVEEDOR_SELECCIONADO>
+    <OFERTASELECCIONADA_x0020_>Oferta_003_ConsultAgro</OFERTASELECCIONADA_x0020_>
+    <NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>ConsultAgro Técnicos Asociados, S.L.P.</NOMBREPROVEEDOR_SELECCIONADO_x0020__x0020_>
+    <IDMOTIVOSELECCIONADO>2</IDMOTIVOSELECCIONADO>
+    <IDACCION>503</IDACCION>
+    <FECHACOSTE>20/03/2024</FECHACOSTE>
+    <OBSERVACIONESECRETARIO>Precio más competitivo entre las tres ofertas recibidas.</OBSERVACIONESECRETARIO>
+    <DESCRIPCIONCOSTE>Elaboración memoria técnica y estudio de viabilidad económica</DESCRIPCIONCOSTE>
+    <tipologiaCoste>Gasto corriente</tipologiaCoste>
+    <IvaAuxiliable>No</IvaAuxiliable>
+    <IVA_Aplicado>21.00</IVA_Aplicado>
+    <DataColumn1></DataColumn1>
+    <INVERSIONAUXILIABLECOSTE>4200.00</INVERSIONAUXILIABLECOSTE>
+  </DatosCostes>
+
+  <!-- ═══════════════════════════
+       TOTALES DE COSTES
+  ══════════════════════════════ -->
+  <DatosTotalesCostes>
+    <auxImporteCosteSinIVA>67700.00</auxImporteCosteSinIVA>
+    <auxImporteSolicitado>47390.00</auxImporteSolicitado>
+  </DatosTotalesCostes>
+
+  <!-- ═══════════════════════════
+       REQUISITOS
+  ══════════════════════════════ -->
+  <DatosRequisitos>
+    <DescripcionRequisito>Estar al corriente de pago de obligaciones tributarias con la AEAT</DescripcionRequisito>
+  </DatosRequisitos>
+  <DatosRequisitos>
+    <DescripcionRequisito>Estar al corriente de pago con la Seguridad Social</DescripcionRequisito>
+  </DatosRequisitos>
+  <DatosRequisitos>
+    <DescripcionRequisito>No haber recibido ayudas declaradas incompatibles por la Comisión Europea</DescripcionRequisito>
+  </DatosRequisitos>
+
+  <!-- ═══════════════════════════
+       DOCUMENTACIÓN APORTADA
+  ══════════════════════════════ -->
+  <DatosDocumentacion>
+    <DOCUMENTO>Memoria descriptiva del proyecto</DOCUMENTO>
+    <FECHA>05/04/2024</FECHA>
+  </DatosDocumentacion>
+  <DatosDocumentacion>
+    <DOCUMENTO>Escritura de constitución de la cooperativa</DOCUMENTO>
+    <FECHA>05/04/2024</FECHA>
+  </DatosDocumentacion>
+  <DatosDocumentacion>
+    <DOCUMENTO>Certificado de estar al corriente con Hacienda</DOCUMENTO>
+    <FECHA>03/04/2024</FECHA>
+  </DatosDocumentacion>
+  <DatosDocumentacion>
+    <DOCUMENTO>Tres presupuestos de proveedores</DOCUMENTO>
+    <FECHA>01/03/2024</FECHA>
+  </DatosDocumentacion>
+
+  <!-- ═══════════════════════════
+       AUTORIZACIONES
+  ══════════════════════════════ -->
+  <DatosAutorizaciones>
+    <DescripcionAutorizacion>Autorización para consulta de datos fiscales ante la AEAT</DescripcionAutorizacion>
+  </DatosAutorizaciones>
+  <DatosAutorizaciones>
+    <DescripcionAutorizacion>Autorización para consulta de datos de Seguridad Social</DescripcionAutorizacion>
+  </DatosAutorizaciones>
+
+  <!-- ═══════════════════════════
+       PROYECTO
+  ══════════════════════════════ -->
+  <DatosProyecto>
+    <TituloProyecto>Modernización tecnológica y mejora de la eficiencia hídrica en Cooperativa Valle del Ebro</TituloProyecto>
+    <DescripcionProyecto>El proyecto contempla la adquisición de maquinaria de precisión y la implantación de un sistema de riego automatizado para reducir el consumo de agua en un 35% y aumentar la productividad agrícola de los socios de la cooperativa.</DescripcionProyecto>
+    <TipoProyecto>Inversión productiva</TipoProyecto>
+    <EsFormativo>false</EsFormativo>
+    <Localidad>Utebo</Localidad>
+    <Municipio>Utebo</Municipio>
+    <AnioEstimadoFin>2025</AnioEstimadoFin>
+    <FocusArea>Competitividad de las PYME</FocusArea>
+    <LineaActuacion>Modernización de explotaciones agrícolas</LineaActuacion>
+    <CertificadoExencionIVA>false</CertificadoExencionIVA>
+    <EsZonaDesfavorecida>true</EsZonaDesfavorecida>
+    <EsZonaMontana>false</EsZonaMontana>
+    <Provincia>Zaragoza</Provincia>
+    <CodigoMunicipio>50275</CodigoMunicipio>
+    <ProyectoCooperacion>No</ProyectoCooperacion>
+    <EntidadesCooperantes></EntidadesCooperantes>
+  </DatosProyecto>
+
+  <!-- ═══════════════════════════
+       FINANCIACIÓN
+  ══════════════════════════════ -->
+  <DatosFinanciacion>
+    <Subv_FondosPropios>20310.00</Subv_FondosPropios>
+    <Subv_Prestamos>0.00</Subv_Prestamos>
+    <Subv_SubvencionEDLP>47390.00</Subv_SubvencionEDLP>
+    <Subv_OtrasAyudas>0.00</Subv_OtrasAyudas>
+    <Total1>20310.00</Total1>
+    <Total2>47390.00</Total2>
+    <TotalFinanciacion>67700.00</TotalFinanciacion>
+  </DatosFinanciacion>
+
+  <!-- ═══════════════════════════
+       AYUDAS POR AÑO
+  ══════════════════════════════ -->
+  <DatosAyudas>
+    <AnioEjecucion>2024</AnioEjecucion>
+    <Importe>67700.00</Importe>
+    <PorcentajeNRA>70.00</PorcentajeNRA>
+    <TotalNRA>47390.00</TotalNRA>
+  </DatosAyudas>
+
+  <!-- ═══════════════════════════
+       INDICADORES – PREVISIÓN ANTES
+  ══════════════════════════════ -->
+  <DatosIndicadoresPrevisionAntes>
+    <IdPrevision>PREV-ANT-001</IdPrevision>
+    <NJornadas>220</NJornadas>
+    <NombreApellidos>García Fernández, Ana</NombreApellidos>
+    <NIF>34567890V</NIF>
+    <FechaNacimiento>22/07/1985</FechaNacimiento>
+    <Sexo>Mujer</Sexo>
+  </DatosIndicadoresPrevisionAntes>
+  <DatosIndicadoresPrevisionAntes>
+    <IdPrevision>PREV-ANT-002</IdPrevision>
+    <NJornadas>240</NJornadas>
+    <NombreApellidos>Ruiz Sánchez, Carlos</NombreApellidos>
+    <NIF>45678901Q</NIF>
+    <FechaNacimiento>11/11/1979</FechaNacimiento>
+    <Sexo>Hombre</Sexo>
+  </DatosIndicadoresPrevisionAntes>
+
+  <!-- ═══════════════════════════
+       INDICADORES – PREVISIÓN DESPUÉS
+  ══════════════════════════════ -->
+  <DatosIndicadoresPrevisionDespues>
+    <IdPrevision>PREV-DESP-001</IdPrevision>
+    <NEmpleo>3</NEmpleo>
+    <NJornadas>660</NJornadas>
+    <Sexo>Mixto</Sexo>
+  </DatosIndicadoresPrevisionDespues>
+
+  <!-- ═══════════════════════════
+       INDICADORES GLOBALES
+  ══════════════════════════════ -->
+  <DatosIndicadores>
+    <IndEActBalActual>850000.00</IndEActBalActual>
+    <IndEVolAnualVentas>620000.00</IndEVolAnualVentas>
+    <IndENTrabajadores>8</IndENTrabajadores>
+    <IndEVABpbAgriAnt>95000.00</IndEVABpbAgriAnt>
+    <IndEVABpbNOAgriAnt>0.00</IndEVABpbNOAgriAnt>
+    <IndEVABpbAgriDesp>128250.00</IndEVABpbAgriDesp>
+    <IndEVABpbNOAgriDesp>0.00</IndEVABpbNOAgriDesp>
+    <IndSPoblacionAfectada>1250</IndSPoblacionAfectada>
+    <IndSImpactoEnEmpleo>3</IndSImpactoEnEmpleo>
+    <IndSNumEmpresasAfectas>1</IndSNumEmpresasAfectas>
+    <PrevAntesHombres>1</PrevAntesHombres>
+    <PrevAntesMujeres>1</PrevAntesMujeres>
+    <PrevDespuesHombres>2</PrevDespuesHombres>
+    <PrevDespuesMujeres>1</PrevDespuesMujeres>
+    <TotalEmpleoCreado>3</TotalEmpleoCreado>
+  </DatosIndicadores>
+
+  <!-- ═══════════════════════════
+       OTRAS AYUDAS CONCURRENTES
+  ══════════════════════════════ -->
+  <DatosOtrasAyudas>
+    <Indice>1</Indice>
+    <Subvencion>12000.00</Subvencion>
+    <Organismo>Gobierno de Aragón – Dpto. Agricultura</Organismo>
+    <Convocatoria>Ayudas modernización 2023</Convocatoria>
+    <PresupuestoTotal>67700.00</PresupuestoTotal>
+    <ImporteAyuda>12000.00</ImporteAyuda>
+    <FinanciadaFondosEuropeos>Sí – FEADER</FinanciadaFondosEuropeos>
+    <Situacion>Concedida</Situacion>
+  </DatosOtrasAyudas>
+
+</InformeSolicitudIOEDLPDS>

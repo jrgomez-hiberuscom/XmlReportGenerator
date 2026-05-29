@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
+using XmlReportGenerator.AI.Services;
 
 namespace XmlReportGenerator.AI.Extensions;
 
@@ -11,13 +13,9 @@ public static class SemanticKernelExtensions
 {
     /// <summary>
     /// Registers the Semantic Kernel with the configured LLM provider from <paramref name="configuration"/>.
+    /// When the endpoint is a LiteLLM-compatible API, a <see cref="LiteLlmClient"/> is also registered
+    /// to bypass Semantic Kernel's response parser (which can fail with reasoning models).
     /// </summary>
-    /// <remarks>
-    /// Reads the <c>AI:DefaultProvider</c> setting to determine which LLM to use.
-    /// Supported values: <c>OpenAI</c>, <c>AzureOpenAI</c>.
-    /// Google Gemini support can be enabled by installing
-    /// <c>Microsoft.SemanticKernel.Connectors.Google</c> when publicly available.
-    /// </remarks>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <returns>The updated service collection.</returns>
@@ -25,44 +23,40 @@ public static class SemanticKernelExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var defaultProvider = configuration["AI:DefaultProvider"] ?? "OpenAI";
+        var defaultProvider = configuration["AI:DefaultProvider"] ?? "GITHUBMODELS";
 
         var builder = Kernel.CreateBuilder();
 
         switch (defaultProvider.ToUpperInvariant())
         {
-            case "AZUREOPENAI":
-                var azureEndpoint = configuration["AI:AzureOpenAI:Endpoint"]
-                    ?? throw new InvalidOperationException("AI:AzureOpenAI:Endpoint is not configured.");
-                var azureApiKey = configuration["AI:AzureOpenAI:ApiKey"]
-                    ?? throw new InvalidOperationException("AI:AzureOpenAI:ApiKey is not configured.");
-                var azureDeployment = configuration["AI:AzureOpenAI:DeploymentName"] ?? "gpt-4o";
-
-                builder.AddAzureOpenAIChatCompletion(
-                    deploymentName: azureDeployment,
-                    endpoint: azureEndpoint,
-                    apiKey: azureApiKey);
-                break;
-
-            // Google Gemini support — requires Microsoft.SemanticKernel.Connectors.Google package.
-            // Uncomment when the package is available and added to the project:
-            //
-            // case "GOOGLE":
-            //     var googleApiKey = configuration["AI:Google:ApiKey"]
-            //         ?? throw new InvalidOperationException("AI:Google:ApiKey is not configured.");
-            //     var googleModel = configuration["AI:Google:Model"] ?? "gemini-1.5-pro";
-            //     builder.AddGoogleAIGeminiChatCompletion(modelId: googleModel, apiKey: googleApiKey);
-            //     break;
-
-            case "OPENAI":
+            case "GITHUBMODELS":
             default:
-                var openAiApiKey = configuration["AI:OpenAI:ApiKey"]
-                    ?? throw new InvalidOperationException("AI:OpenAI:ApiKey is not configured.");
-                var openAiModel = configuration["AI:OpenAI:Model"] ?? "gpt-4o";
+                var apiKey = configuration["AI:GitHubModels:ApiKey"]
+                    ?? throw new InvalidOperationException("AI:GitHubModels:ApiKey is not configured.");
+                var endpoint = configuration["AI:GitHubModels:Endpoint"]
+                    ?? "https://models.inference.ai.azure.com";
+                var model = configuration["AI:GitHubModels:Model"] ?? "gpt-4o";
 
                 builder.AddOpenAIChatCompletion(
-                    modelId: openAiModel,
-                    apiKey: openAiApiKey);
+                    modelId: model,
+                    apiKey: apiKey,
+                    endpoint: new Uri(endpoint)
+                );
+
+                // Register LiteLlmClient for endpoints that are not the default GitHub Models API.
+                // These are typically LiteLLM proxies or reasoning models that return extra fields
+                // (e.g. reasoning_content) that confuse Semantic Kernel's response parser.
+                if (!endpoint.Contains("models.inference.ai.azure.com", StringComparison.OrdinalIgnoreCase))
+                {
+                    services.AddSingleton(sp =>
+                    {
+                        var http = new HttpClient { BaseAddress = new Uri(endpoint) };
+                        http.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+                        var logger = sp.GetRequiredService<ILogger<LiteLlmClient>>();
+                        return new LiteLlmClient(http, model, logger);
+                    });
+                }
+
                 break;
         }
 

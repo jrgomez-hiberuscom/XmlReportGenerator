@@ -2,28 +2,21 @@ name: GenerateXml
 description: Generates a fictitious but schema-valid XML document from an XSD schema and instructions.
 template_format: semantic-kernel
 template: |
-  You are an XML data generator expert.
+  You are an XML data generator. Generate a valid XML for this schema. Return ONLY XML, no explanations.
 
-  Given the following XSD schema:
+  XSD:
   {{$xsdContent}}
 
-  And the following generation instructions:
+  Instructions:
   {{$markdownInstructions}}
-
-  Generate a single valid XML document that:
-  - Conforms strictly to the XSD schema above
-  - Contains realistic-looking but entirely fictitious data (names, dates, amounts, etc.)
-  - Includes all required elements and attributes defined in the schema
-  - Uses proper XML declaration (<?xml version="1.0" encoding="UTF-8"?>)
-  - Returns ONLY the XML document content — no explanations, no markdown code blocks
 
 input_variables:
   - name: xsdContent
-    description: The XSD schema content that the generated XML must conform to.
+    description: The XSD schema content.
   - name: markdownInstructions
-    description: Markdown instructions describing what kind of data to generate.
+    description: Instructions describing what data to generate.
 
 execution_settings:
   default:
-    temperature: 0.7
+    temperature: 0.3
     max_tokens: 4096

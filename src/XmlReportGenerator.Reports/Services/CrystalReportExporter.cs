@@ -1,35 +1,28 @@
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using XmlReportGenerator.Core.Interfaces;
 
 namespace XmlReportGenerator.Reports.Services;
 
 /// <summary>
-/// Exports Crystal Reports (.rpt) files to HTML using the provided XML as the datasource.
+/// Exports Crystal Reports (.rpt) files to HTML by invoking the external .NET Framework 4.8 tool.
 /// </summary>
 /// <remarks>
 /// <para>
-/// This service requires the SAP Crystal Reports Runtime for Visual Studio to be installed.
-/// The runtime is NOT available on NuGet; it must be installed from the SAP website:
-/// https://www.sap.com/products/technology-platform/crystal-reports.html
+/// Crystal Reports SDK requires .NET Framework 4.x and cannot run in .NET 9 directly.
+/// This service delegates the export to <c>CrystalReportExporter.Tool.exe</c>, a .NET Framework 4.8
+/// console application that performs the actual Crystal Reports rendering.
 /// </para>
 /// <para>
-/// After installing the runtime, add local references to the Crystal Reports DLLs from:
-/// C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\
-/// SAP BusinessObjects Enterprise XI 4.0\win32_x86\
-/// </para>
-/// <para>
-/// To enable full Crystal Reports functionality, define the <c>CRYSTAL_REPORTS</c> compilation
-/// constant in your build configuration.
+/// The tool path is resolved from the <c>CRYSTAL_EXPORTER_TOOL_PATH</c> environment variable,
+/// or defaults to <c>tools\CrystalReportExporter.Tool\bin\Release\CrystalReportExporter.Tool.exe</c>
+/// relative to the application base directory.
 /// </para>
 /// </remarks>
 public class CrystalReportExporter : ICrystalReportExporter
 {
     private readonly ILogger<CrystalReportExporter> _logger;
 
-    /// <summary>
-    /// Initializes a new instance of <see cref="CrystalReportExporter"/>.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
     public CrystalReportExporter(ILogger<CrystalReportExporter> logger)
     {
         _logger = logger;
@@ -39,84 +32,73 @@ public class CrystalReportExporter : ICrystalReportExporter
     public async Task ExportToHtmlAsync(
         string rptFilePath,
         string xmlContent,
+        string xsdFilePath,
         string outputHtmlPath,
         CancellationToken cancellationToken = default)
     {
-#if CRYSTAL_REPORTS
-        // ── Crystal Reports Runtime Required ─────────────────────────────────────
-        // Uncomment and use the following code once the SAP Crystal Reports Runtime
-        // is installed and the DLL references are configured.
-        //
-        // using var report = new CrystalDecisions.CrystalReports.Engine.ReportDocument();
-        // report.Load(rptFilePath);
-        //
-        // // Write the XML content to a temporary file for use as datasource
-        // var xmlTempPath = Path.GetTempFileName() + ".xml";
-        // await File.WriteAllTextAsync(xmlTempPath, xmlContent, cancellationToken);
-        //
-        // try
-        // {
-        //     // Set the XML file as the datasource
-        //     report.SetDataSource(new System.Data.DataSet());
-        //     // For XML datasource, Crystal Reports uses the file path:
-        //     report.DataSourceConnections[0].SetLogonInfo("", "", "", xmlTempPath);
-        //
-        //     // Export to HTML
-        //     var exportOptions = new CrystalDecisions.Shared.ExportOptions();
-        //     var htmlFormatOptions = new CrystalDecisions.Shared.HtmlFormatOptions();
-        //     htmlFormatOptions.HTMLBaseFolderName = Path.GetDirectoryName(outputHtmlPath)!;
-        //     htmlFormatOptions.HTMLFileName = Path.GetFileName(outputHtmlPath);
-        //     exportOptions.ExportFormatType = CrystalDecisions.Shared.ExportFormatType.HTML40;
-        //     exportOptions.FormatOptions = htmlFormatOptions;
-        //     exportOptions.ExportDestinationType = CrystalDecisions.Shared.ExportDestinationType.DiskFile;
-        //
-        //     report.Export(exportOptions);
-        //     _logger.LogInformation("Crystal report exported to HTML: {Path}", outputHtmlPath);
-        // }
-        // finally
-        // {
-        //     if (File.Exists(xmlTempPath))
-        //         File.Delete(xmlTempPath);
-        //     report.Close();
-        // }
-        await Task.CompletedTask;
-#else
-        // ── Stub mode (no Crystal Reports runtime) ────────────────────────────────
-        // Produces a placeholder HTML file so the pipeline can continue.
-        _logger.LogWarning(
-            "Crystal Reports runtime is not available (CRYSTAL_REPORTS symbol not defined). " +
-            "Generating placeholder HTML. Install the SAP Crystal Reports Runtime and define " +
-            "CRYSTAL_REPORTS to enable full export functionality.");
+        var toolPath = ResolveToolPath();
+        if (!File.Exists(toolPath))
+        {
+            throw new FileNotFoundException(
+                $"Crystal Reports exporter tool not found at: {toolPath}. " +
+                "Build the tools/CrystalReportExporter.Tool project targeting .NET Framework 4.8, " +
+                "or set the CRYSTAL_EXPORTER_TOOL_PATH environment variable.");
+        }
 
-        var placeholderHtml = $$"""
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8" />
-                <title>Report - Placeholder</title>
-                <style>
-                    body { font-family: Arial, sans-serif; margin: 2rem; }
-                    .notice { background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 4px; }
-                </style>
-            </head>
-            <body>
-                <div class="notice">
-                    <strong>Crystal Reports Stub</strong>
-                    <p>The SAP Crystal Reports runtime is not installed. This is a placeholder HTML output.</p>
-                    <p>Source report: <code>{{rptFilePath}}</code></p>
-                    <p>Generated at: {{DateTime.UtcNow:O}}</p>
-                </div>
-                <hr />
-                <h2>XML Datasource Preview</h2>
-                <pre>{{System.Security.SecurityElement.Escape(xmlContent)}}</pre>
-            </body>
-            </html>
-            """;
+        // Write XML content to a temp file for the tool to read
+        var tempXmlPath = Path.Combine(Path.GetTempPath(), $"cr_input_{Guid.NewGuid():N}.xml");
+        try
+        {
+            await File.WriteAllTextAsync(tempXmlPath, xmlContent, cancellationToken);
 
-        Directory.CreateDirectory(Path.GetDirectoryName(outputHtmlPath)!);
-        await File.WriteAllTextAsync(outputHtmlPath, placeholderHtml, cancellationToken);
+            var arguments = $"--rpt \"{rptFilePath}\" --xml \"{tempXmlPath}\" --xsd \"{xsdFilePath}\" --output \"{outputHtmlPath}\"";
 
-        _logger.LogInformation("Placeholder HTML written to {Path}", outputHtmlPath);
-#endif
+            _logger.LogInformation("Invoking Crystal Reports tool: {ToolPath} {Arguments}", toolPath, arguments);
+
+            using var process = new Process();
+            process.StartInfo = new ProcessStartInfo
+            {
+                FileName = toolPath,
+                Arguments = arguments,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            };
+
+            process.Start();
+
+            var stdout = await process.StandardOutput.ReadToEndAsync(cancellationToken);
+            var stderr = await process.StandardError.ReadToEndAsync(cancellationToken);
+
+            await process.WaitForExitAsync(cancellationToken);
+
+            if (process.ExitCode != 0)
+            {
+                _logger.LogError("Crystal Reports tool failed (exit code {ExitCode}): {StdErr}", process.ExitCode, stderr);
+                throw new InvalidOperationException(
+                    $"Crystal Reports export failed (exit code {process.ExitCode}): {stderr}");
+            }
+
+            _logger.LogInformation("Crystal Reports export completed: {Output}", stdout.Trim());
+        }
+        finally
+        {
+            try { File.Delete(tempXmlPath); } catch { }
+        }
+    }
+
+    private static string ResolveToolPath()
+    {
+        // 1. Environment variable override
+        var envPath = Environment.GetEnvironmentVariable("CRYSTAL_EXPORTER_TOOL_PATH");
+        if (!string.IsNullOrEmpty(envPath))
+            return envPath;
+
+        // 2. Default: relative to app base directory
+        return Path.Combine(
+            AppContext.BaseDirectory,
+            "tools",
+            "CrystalReportExporter.Tool.exe");
     }
 }

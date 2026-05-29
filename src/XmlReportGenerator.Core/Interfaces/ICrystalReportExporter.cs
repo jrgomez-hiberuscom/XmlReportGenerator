@@ -13,5 +13,5 @@ public interface ICrystalReportExporter
     /// <param name="xmlContent">The XML content to use as the report datasource.</param>
     /// <param name="outputHtmlPath">The destination path for the exported HTML file.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    Task ExportToHtmlAsync(string rptFilePath, string xmlContent, string outputHtmlPath, CancellationToken cancellationToken = default);
+    Task ExportToHtmlAsync(string rptFilePath, string xmlContent, string xsdFilePath, string outputHtmlPath, CancellationToken cancellationToken = default);
 }
